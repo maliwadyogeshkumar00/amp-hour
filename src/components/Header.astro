@@ -60,6 +60,9 @@ const {
 } = Astro.props;
 
 const [brandA, brandB = ""] = brand.split("·");
+const base = import.meta.env.BASE_URL;
+const logoSrc = base + "amphour-logo.webp";
+const homeHref = base;
 ---
 
 <header class="amp-header">
@@ -69,7 +72,7 @@ const [brandA, brandB = ""] = brand.split("·");
   </div>
 
   <div class="amp-bar">
-    <a href="/" class="amp-wm">{brandA}<span class="amp-tick">·</span>{brandB}</a>
+    <a href={homeHref} class="amp-wm" aria-label="AMPHOUR — home"><img src={logoSrc} alt="AMPHOUR" class="amp-logo" width="1400" height="116" /></a>
 
     <nav class="amp-nav" aria-label="Primary">
       <span class="amp-megawrap" data-megawrap aria-expanded="false">
@@ -133,9 +136,8 @@ const [brandA, brandB = ""] = brand.split("·");
   .amp-lang b{color:var(--paper)}.amp-lang span{color:var(--slate)}
 
   .amp-bar{display:flex;align-items:center;gap:clamp(22px,3vw,44px);padding:0 clamp(20px,4vw,54px);height:72px}
-  .amp-wm{font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:20px;letter-spacing:.02em;
-    color:var(--paper);white-space:nowrap;display:flex;align-items:baseline}
-  .amp-tick{color:var(--signal);margin:0 3px;font-weight:500;display:inline-block}
+  .amp-wm{display:flex;align-items:center;flex-shrink:0}
+  .amp-logo{height:clamp(16px,4.6vw,22px);width:auto;display:block}
   .amp-nav{display:flex;gap:clamp(18px,2.2vw,30px);align-items:center}
   .amp-link{font-family:'Space Grotesk',sans-serif;font-weight:400;font-size:14.5px;color:var(--paper-dim);
     position:relative;padding:8px 0;display:inline-flex;align-items:center;gap:7px;transition:color .25s var(--ease)}
