@@ -1,0 +1,146 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+
+const fields = [
+  { code: "01 · UPS",  name: "Critical Infrastructure", desc: "Uninterruptible power for defense installations and command sites." },
+  { code: "02 · STAT", name: "Stationary Systems",      desc: "Energy storage for fixed defense sites and system platforms." },
+  { code: "03 · VEH",  name: "Defense Vehicles",        desc: "Cells engineered for military vehicle power and endurance." },
+  { code: "04 · UAV",  name: "UAV & Unmanned",          desc: "Cells for drones and autonomous platforms, qualified per program." },
+];
+---
+
+<Layout>
+  <Header active="applications" />
+
+  <main>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="glow"></div>
+      <div class="hero-in">
+        <div class="kick">Sovereign defense energy · Battery solutions</div>
+        <h1>Europe is rearming.<br />Its batteries <em>aren't.</em></h1>
+        <p class="sub">
+          AMP·HOUR is Europe's defense battery cell foundry — sovereign German production
+          infrastructure, from first A-sample to 100&nbsp;MWh series. Your cells. Your chemistry.
+          Your IP. Produced in Germany, under German control.
+        </p>
+        <div class="row">
+          <a href="/contact" class="btn">Request a campaign <span>→</span></a>
+          <a href="/applications" class="btn ghost">What we power</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHAT WE POWER -->
+    <section class="power">
+      <div class="p-head">
+        <span class="tag">What we power</span>
+        <h2>Four fields. One sovereign line.</h2>
+      </div>
+      <div class="grid">
+        {fields.map((f) => (
+          <a class="cell" href="/applications">
+            <div class="num">{f.code}</div>
+            <h3>{f.name}</h3>
+            <p>{f.desc}</p>
+            <div class="ln"></div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <footer class="foot">
+      <div class="foot-in">
+        <span class="wm">AMP<span class="tk">·</span>HOUR</span>
+        <span>Engineered &amp; produced in Germany · CELLOVATE GmbH</span>
+        <span>Sovereign energy for Europe's defense</span>
+      </div>
+    </footer>
+  </main>
+</Layout>
+
+<style>
+  main { position: relative; }
+  section { padding-inline: clamp(20px, 4vw, 54px); }
+
+  /* HERO */
+  .hero { position: relative; min-height: 82vh; display: flex; align-items: center; overflow: hidden; }
+  .hero .glow {
+    position: absolute; z-index: 0; width: 62vw; height: 62vw; left: -8vw; top: 4vh; pointer-events: none;
+    background: radial-gradient(circle, rgba(255,90,31,.12), transparent 62%); filter: blur(18px);
+  }
+  .hero-in { position: relative; z-index: 1; padding-block: 8vh; max-width: 1400px; margin-inline: auto; width: 100%; }
+  .kick {
+    font-family: "JetBrains Mono", monospace; text-transform: uppercase; letter-spacing: .2em;
+    font-size: 11px; color: var(--signal); display: flex; align-items: center; gap: 14px; margin-bottom: 28px;
+  }
+  .kick::before { content: ""; width: 38px; height: 1px; background: var(--signal); }
+  .hero h1 {
+    font-family: "Space Grotesk", sans-serif; font-weight: 400; letter-spacing: -.02em;
+    font-size: clamp(40px, 7.5vw, 100px); line-height: .98;
+  }
+  .hero h1 em { font-style: normal; color: var(--signal); }
+  .sub { margin-top: 28px; max-width: 60ch; color: var(--paper-dim); font-size: clamp(15px, 1.3vw, 18px); }
+  .row { margin-top: 38px; display: flex; gap: 16px; flex-wrap: wrap; }
+  .btn {
+    font-family: "Space Grotesk", sans-serif; font-weight: 500; font-size: 14px; color: var(--void);
+    background: var(--signal); padding: 14px 24px; display: inline-flex; align-items: center; gap: 10px;
+    clip-path: polygon(11px 0, 100% 0, 100% calc(100% - 11px), calc(100% - 11px) 100%, 0 100%, 0 11px);
+    transition: filter .2s var(--ease);
+  }
+  .btn span { transition: transform .25s var(--ease); }
+  .btn:hover { filter: brightness(1.08); }
+  .btn:hover span { transform: translateX(4px); }
+  .btn.ghost {
+    background: transparent; color: var(--paper); border: 1px solid var(--slate);
+    clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+  }
+  .btn.ghost:hover { border-color: var(--signal); filter: none; }
+
+  /* WHAT WE POWER */
+  .power { max-width: 1400px; margin-inline: auto; padding-block: clamp(60px, 9vw, 120px); }
+  .p-head { margin-bottom: 40px; }
+  .tag {
+    font-family: "JetBrains Mono", monospace; text-transform: uppercase; letter-spacing: .16em;
+    font-size: 11px; color: var(--signal); display: inline-flex; align-items: center; gap: 12px;
+  }
+  .tag::before { content: ""; width: 26px; height: 1px; background: var(--signal); }
+  .power h2 {
+    font-family: "Space Grotesk", sans-serif; font-weight: 400; letter-spacing: -.02em;
+    font-size: clamp(28px, 4vw, 52px); line-height: 1.02; margin-top: 16px;
+  }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--line); }
+  .cell {
+    padding: 30px 26px 34px; border-right: 1px solid var(--line); position: relative;
+    transition: background .28s var(--ease); display: block;
+  }
+  .cell:last-child { border-right: none; }
+  .cell:hover { background: var(--carbon); }
+  .num { font-family: "JetBrains Mono", monospace; letter-spacing: .14em; font-size: 9.5px; color: var(--ink-dim); }
+  .cell:hover .num { color: var(--signal); }
+  .cell h3 {
+    font-family: "Space Grotesk", sans-serif; font-weight: 500; font-size: 17px; letter-spacing: -.005em;
+    color: var(--paper); margin: 24px 0 9px;
+  }
+  .cell p { font-size: 12.5px; color: var(--ink-dim); line-height: 1.5; }
+  .ln { margin-top: 18px; height: 1px; background: var(--line); position: relative; }
+  .ln::after { content: ""; position: absolute; left: 0; top: 0; height: 1px; width: 0; background: var(--signal); transition: width .34s var(--ease); }
+  .cell:hover .ln::after { width: 40px; }
+
+  /* FOOTER */
+  .foot { border-top: 1px solid var(--line); margin-top: 40px; }
+  .foot-in {
+    max-width: 1400px; margin-inline: auto; padding: 30px clamp(20px, 4vw, 54px);
+    display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+    font-family: "JetBrains Mono", monospace; text-transform: uppercase; letter-spacing: .12em;
+    font-size: 10.5px; color: var(--ink-dim);
+  }
+  .foot-in .wm { font-family: "Space Grotesk", sans-serif; font-weight: 500; letter-spacing: 0; font-size: 15px; color: var(--paper); text-transform: none; }
+  .foot-in .wm .tk { color: var(--signal); }
+
+  @media (max-width: 860px) {
+    .grid { grid-template-columns: 1fr 1fr; }
+    .cell:nth-child(even) { border-right: none; }
+  }
+</style>

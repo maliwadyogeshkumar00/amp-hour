@@ -1,0 +1,231 @@
+---
+/**
+ * AMP·HOUR — Site header
+ * Head 02·A: engineering-bar shell (light Space Grotesk weights) + the engineering-grid Applications mega-menu.
+ * Self-contained: scoped styles + client script. Only external dependency is the three Google fonts
+ * (add the <link> from the integration notes to your Layout <head>).
+ *
+ * Usage:
+ *   import Header from "../components/Header.astro";
+ *   <Header active="applications" />
+ */
+export interface AppField {
+  key: string;
+  code: string;   // mono index, e.g. "01 · UPS"
+  name: string;   // field name
+  desc: string;   // one-line spec
+  href: string;
+}
+export interface NavItem { label: string; href: string; key: string; }
+
+export interface Props {
+  brand?: string;
+  ctaLabel?: string;
+  ctaHref?: string;
+  active?: string;            // key of the active nav item
+  readoutLabel?: string;
+  readoutValue?: string;
+  readoutMeta?: string;
+  utility?: string;
+  megaLeadTitle?: string;
+  megaLeadText?: string;
+  nav?: NavItem[];
+  applications?: AppField[];
+}
+
+const {
+  brand = "AMP·HOUR",
+  ctaLabel = "Request a campaign",
+  ctaHref = "/contact",
+  active = "applications",
+  readoutLabel = "Series capacity",
+  readoutValue = "100 MWh",
+  readoutMeta = "3-shift",
+  utility = "Engineered & produced in Germany",
+  megaLeadTitle = "Four fields. One sovereign line.",
+  megaLeadText = "Find yourself in the door — the proof lives one click deeper.",
+  nav = [
+    { key: "applications", label: "Applications", href: "/applications" },
+    { key: "production",   label: "Production",   href: "/production" },
+    { key: "sovereignty",  label: "Sovereignty",  href: "/sovereignty" },
+    { key: "structure",    label: "Structure",    href: "/structure" },
+    { key: "contact",      label: "Contact",      href: "/contact" },
+  ],
+  applications = [
+    { key: "ups",  code: "01 · UPS",  name: "Critical Infrastructure", desc: "Uninterruptible power for defense installations and command sites.", href: "/applications/ups" },
+    { key: "stat", code: "02 · STAT", name: "Stationary Systems",      desc: "Energy storage for fixed defense sites and system platforms.",      href: "/applications/stationary" },
+    { key: "veh",  code: "03 · VEH",  name: "Defense Vehicles",        desc: "Cells engineered for military vehicle power and endurance.",         href: "/applications/vehicles" },
+    { key: "uav",  code: "04 · UAV",  name: "UAV & Unmanned",          desc: "Cells for drones and autonomous platforms, qualified per program.",  href: "/applications/uav" },
+  ],
+} = Astro.props;
+
+const [brandA, brandB = ""] = brand.split("·");
+---
+
+<header class="amp-header">
+  <div class="amp-util">
+    <div><b><span class="amp-dot"></span>{utility}</b></div>
+    <div class="amp-lang"><b>EN</b> <span>/</span> DE</div>
+  </div>
+
+  <div class="amp-bar">
+    <a href="/" class="amp-wm">{brandA}<span class="amp-tick">·</span>{brandB}</a>
+
+    <nav class="amp-nav" aria-label="Primary">
+      <span class="amp-megawrap" data-megawrap aria-expanded="false">
+        <a
+          href={nav[0]?.href}
+          class:list={["amp-link", { active: active === nav[0]?.key }]}
+          data-megatrig
+          aria-haspopup="true"
+          aria-expanded="false"
+        >{nav[0]?.label} <span class="amp-caret">▾</span></a>
+      </span>
+      {nav.slice(1).map((item) => (
+        <a href={item.href} class:list={["amp-link", { active: active === item.key }]}>{item.label}</a>
+      ))}
+    </nav>
+
+    <div class="amp-spacer"></div>
+    <div class="amp-readout">{readoutLabel}<br /><b>{readoutValue}</b> · {readoutMeta}</div>
+    <a href={ctaHref} class="amp-cta">{ctaLabel} <span class="amp-arw">→</span></a>
+  </div>
+
+  <!-- 2·A engineering-grid mega -->
+  <div class="amp-mega" data-mega>
+    <div class="amp-mega-inner">
+      <div class="amp-lead">
+        <div class="amp-lead-t">What we power</div>
+        <h4>{megaLeadTitle}</h4>
+        <p>{megaLeadText}</p>
+      </div>
+      {applications.map((a) => (
+        <a class="amp-cell" href={a.href}>
+          <div class="amp-num">{a.code}</div>
+          <h5>{a.name}</h5>
+          <p>{a.desc}</p>
+          <div class="amp-ln"></div>
+        </a>
+      ))}
+    </div>
+  </div>
+</header>
+
+<div class="amp-scrim" data-scrim aria-hidden="true"></div>
+
+<style>
+  .amp-header{
+    --void:#08090B;--carbon:#14181D;--slate:#2A313A;--line:#20262D;--line2:#191E24;
+    --signal:#FF5A1F;--paper:#F2F4F6;--paper-dim:#9BA3AC;--ink-dim:#59616B;--ease:cubic-bezier(0.16,1,0.3,1);
+    position:sticky;top:0;z-index:50;background:rgba(8,9,11,.72);
+    -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);color:var(--paper);
+    font-family:'Inter',system-ui,sans-serif;font-weight:400;
+  }
+  .amp-header *{box-sizing:border-box}
+  .amp-header a{text-decoration:none;color:inherit}
+
+  .amp-util{display:flex;align-items:center;justify-content:space-between;padding:9px clamp(20px,4vw,54px);
+    border-bottom:1px solid var(--line2);font-family:'JetBrains Mono',monospace;text-transform:uppercase;
+    letter-spacing:.14em;font-size:10px;color:var(--ink-dim)}
+  .amp-dot{width:5px;height:5px;background:var(--signal);display:inline-block;margin-right:9px;vertical-align:middle}
+  .amp-util b{color:var(--paper-dim);font-weight:400}
+  .amp-lang b{color:var(--paper)}.amp-lang span{color:var(--slate)}
+
+  .amp-bar{display:flex;align-items:center;gap:clamp(22px,3vw,44px);padding:0 clamp(20px,4vw,54px);height:72px}
+  .amp-wm{font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:20px;letter-spacing:.02em;
+    color:var(--paper);white-space:nowrap;display:flex;align-items:baseline}
+  .amp-tick{color:var(--signal);margin:0 3px;font-weight:500;display:inline-block}
+  .amp-nav{display:flex;gap:clamp(18px,2.2vw,30px);align-items:center}
+  .amp-link{font-family:'Space Grotesk',sans-serif;font-weight:400;font-size:14.5px;color:var(--paper-dim);
+    position:relative;padding:8px 0;display:inline-flex;align-items:center;gap:7px;transition:color .25s var(--ease)}
+  .amp-link:hover,.amp-link:focus-visible{color:var(--paper);outline:none}
+  .amp-link::after{content:"";position:absolute;left:0;bottom:2px;height:1px;width:0;background:var(--signal);transition:width .3s var(--ease)}
+  .amp-link:hover::after,.amp-link.active::after,.amp-megawrap[aria-expanded="true"] .amp-link::after{width:16px}
+  .amp-link.active{color:var(--paper)}
+  .amp-caret{font-size:9px;color:var(--slate);transition:transform .3s var(--ease),color .25s}
+  .amp-megawrap[aria-expanded="true"] .amp-caret{transform:rotate(180deg);color:var(--signal)}
+  .amp-spacer{flex:1}
+  .amp-readout{font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.1em;font-size:10px;
+    color:var(--ink-dim);text-align:right;line-height:1.5;white-space:nowrap}
+  .amp-readout b{color:var(--signal);font-weight:400}
+  .amp-cta{font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:13px;color:var(--void);background:var(--signal);
+    padding:12px 20px;white-space:nowrap;position:relative;overflow:hidden;display:inline-flex;align-items:center;gap:9px;
+    clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px)}
+  .amp-cta::before{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 25%,rgba(255,255,255,.4) 50%,transparent 75%);transform:translateX(-140%);transition:transform .7s var(--ease)}
+  .amp-cta:hover::before{transform:translateX(140%)}
+  .amp-arw{transition:transform .3s var(--ease)}.amp-cta:hover .amp-arw{transform:translateX(4px)}
+
+  /* engineering-grid mega */
+  .amp-mega{position:absolute;left:0;right:0;top:100%;background:var(--void);border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);opacity:0;visibility:hidden;transform:translateY(-10px);
+    transition:opacity .34s var(--ease),transform .34s var(--ease),visibility .34s;z-index:40}
+  .amp-mega.open{opacity:1;visibility:visible;transform:none}
+  .amp-mega-inner{display:grid;grid-template-columns:.85fr 1fr 1fr 1fr 1fr}
+  .amp-lead{padding:30px clamp(20px,2.2vw,30px);border-right:1px solid var(--line)}
+  .amp-lead-t{font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.16em;font-size:9.5px;color:var(--signal);margin-bottom:16px}
+  .amp-lead h4{font-family:'Space Grotesk',sans-serif;font-weight:400;font-size:20px;line-height:1.18;letter-spacing:-.01em;color:var(--paper)}
+  .amp-lead p{font-size:12.5px;color:var(--ink-dim);margin-top:12px;max-width:26ch}
+  .amp-cell{padding:28px clamp(16px,1.6vw,24px) 30px;border-right:1px solid var(--line);position:relative;transition:background .28s var(--ease);display:block}
+  .amp-cell:last-child{border-right:none}
+  .amp-cell:hover{background:var(--carbon)}
+  .amp-num{font-family:'JetBrains Mono',monospace;letter-spacing:.14em;font-size:9.5px;color:var(--ink-dim);transition:color .25s}
+  .amp-cell:hover .amp-num{color:var(--signal)}
+  .amp-cell h5{font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:16px;line-height:1.2;letter-spacing:-.005em;color:var(--paper);margin:26px 0 9px}
+  .amp-cell p{font-size:12px;color:var(--ink-dim);line-height:1.5}
+  .amp-ln{margin-top:18px;height:1px;background:var(--line);position:relative}
+  .amp-ln::after{content:"";position:absolute;left:0;top:0;height:1px;width:0;background:var(--signal);transition:width .34s var(--ease)}
+  .amp-cell:hover .amp-ln::after{width:38px}
+
+  .amp-scrim{position:fixed;inset:0;z-index:40;background:rgba(4,5,7,.5);opacity:0;visibility:hidden;
+    transition:opacity .34s var(--ease),visibility .34s;pointer-events:none}
+  .amp-scrim.on{opacity:1;visibility:visible;pointer-events:auto}
+
+  @media (prefers-reduced-motion:no-preference){
+    .amp-tick{animation:amp-cell 2.8s var(--ease) infinite}
+    @keyframes amp-cell{0%,100%{opacity:1;text-shadow:0 0 0 rgba(255,90,31,0)}50%{opacity:.62;text-shadow:0 0 11px rgba(255,90,31,.7)}}
+    .amp-mega.open .amp-lead,.amp-mega.open .amp-cell{opacity:0;transform:translateY(12px);animation:amp-rise .5s var(--ease) forwards}
+    .amp-mega.open .amp-cell:nth-child(2){animation-delay:.05s}
+    .amp-mega.open .amp-cell:nth-child(3){animation-delay:.1s}
+    .amp-mega.open .amp-cell:nth-child(4){animation-delay:.15s}
+    .amp-mega.open .amp-cell:nth-child(5){animation-delay:.2s}
+    @keyframes amp-rise{to{opacity:1;transform:none}}
+  }
+
+  @media (max-width:860px){
+    .amp-nav .amp-link:not([data-megatrig]){display:none}
+    .amp-readout{display:none}
+    .amp-mega-inner{grid-template-columns:1fr 1fr}
+    .amp-lead{grid-column:1/-1;border-right:none;border-bottom:1px solid var(--line)}
+    .amp-cell:nth-child(even){border-right:none}
+  }
+</style>
+
+<script>
+  document.querySelectorAll(".amp-header").forEach((header) => {
+    const wrap = header.querySelector("[data-megawrap]");
+    const trig = header.querySelector("[data-megatrig]");
+    const mega = header.querySelector("[data-mega]");
+    const scrim = header.parentElement?.querySelector("[data-scrim]") || document.querySelector(".amp-scrim");
+    if (!wrap || !trig || !mega) return;
+
+    let open = false, timer;
+    const setOpen = (v) => {
+      open = v;
+      mega.classList.toggle("open", v);
+      wrap.setAttribute("aria-expanded", String(v));
+      trig.setAttribute("aria-expanded", String(v));
+      scrim && scrim.classList.toggle("on", v);
+    };
+
+    wrap.addEventListener("mouseenter", () => { clearTimeout(timer); setOpen(true); });
+    mega.addEventListener("mouseenter", () => { clearTimeout(timer); setOpen(true); });
+    header.addEventListener("mouseleave", () => { timer = setTimeout(() => setOpen(false), 140); });
+    trig.addEventListener("click", (e) => { e.preventDefault(); setOpen(!open); });
+    trig.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setOpen(!open); }
+    });
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape") setOpen(false); });
+    scrim && scrim.addEventListener("click", () => setOpen(false));
+  });
+</script>

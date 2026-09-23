@@ -1,0 +1,67 @@
+---
+/**
+ * Base layout for the AMP·HOUR site.
+ * Loads the three brand fonts and the global Void & Signal tokens/reset.
+ */
+export interface Props {
+  title?: string;
+  description?: string;
+}
+const {
+  title = "AMP·HOUR — Europe's defense battery cell foundry",
+  description = "Sovereign German production infrastructure for defense battery cells — from A-sample to 100 MWh series.",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <slot />
+
+    <style is:global>
+      :root {
+        --void: #08090b;
+        --carbon: #14181d;
+        --slate: #2a313a;
+        --line: #20262d;
+        --signal: #ff5a1f;
+        --paper: #f2f4f6;
+        --paper-dim: #9ba3ac;
+        --ink-dim: #59616b;
+        --ease: cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      html { scroll-behavior: smooth; background: var(--void); }
+      body {
+        background: var(--void);
+        color: var(--paper);
+        font-family: "Inter", system-ui, sans-serif;
+        font-weight: 400;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+      }
+      a { color: inherit; text-decoration: none; }
+      ::selection { background: var(--signal); color: var(--void); }
+      :focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; }
+    </style>
+  </body>
+</html>
